@@ -24,7 +24,13 @@ var paths = {
 
 gulp.task('mincss', function(){
   return gulp.src(paths.css)
-    .pipe(sass().on('error', sass.logError))
+    .pipe(sass())
+    .on('error', notify.onError(function(err){
+      return {
+        title: 'SASS',
+        message: err.message
+      };
+    }))
     .pipe(minifyCss())
     .pipe(gulp.dest('src/static/css'))
     .pipe(reload({stream:true}))
@@ -45,6 +51,12 @@ gulp.task('pug', function() {
         .pipe(plumber())
         .pipe(pug({
             pretty: true
+        }))
+        .on('error', notify.onError(function(err){
+          return {
+            title: 'Pug',
+            message: err.message
+          };
         }))
         .pipe(gulp.dest('src'))
         .pipe(reload({stream:true}))

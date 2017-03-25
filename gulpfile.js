@@ -88,7 +88,6 @@ gulp.task('cleansprite', function() {
     return del.sync('src/static/img/sprite/sprite.png');
 });
 
-
 gulp.task('spritemade', function() {
     var spriteData =
         gulp.src('src/static/img/sprite/*.*')
@@ -130,20 +129,20 @@ gulp.task('img', function() {
             use: [pngquant()]
 
         })))
-        .pipe(gulp.dest('product/img'));
+        .pipe(gulp.dest('product/static/img'));
 });
 
 // Сборка проекта
 
 gulp.task('build', ['clean', 'img', 'mincss', 'scripts'], function() {
     var buildCss = gulp.src('src/static/css/*.css')
-        .pipe(gulp.dest('product/css'));
+        .pipe(gulp.dest('product/static/css'));
 
     var buildFonts = gulp.src('src/static/fonts/**/*')
-        .pipe(gulp.dest('product/fonts'));
+        .pipe(gulp.dest('product/static/fonts'));
 
     var buildJs = gulp.src('src/static/js/**.js')
-        .pipe(gulp.dest('product/js'));
+        .pipe(gulp.dest('product/static/js'));
 
     var buildHtml = gulp.src('src/*.html')
         .pipe(gulp.dest('product/'));
@@ -153,7 +152,7 @@ gulp.task('build', ['clean', 'img', 'mincss', 'scripts'], function() {
             progressive: true,
             use: [pngquant()]
         }))
-        .pipe(gulp.dest('product/img/sprite/'));
+        .pipe(gulp.dest('product/static/img/sprite/'));
 });
 
 gulp.task('default', ['watcher', 'browserSync']);

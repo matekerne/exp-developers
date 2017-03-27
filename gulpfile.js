@@ -19,7 +19,7 @@ var gulp        = require('gulp'),
 
 var paths = {
   html:['src/*.html'],
-  css:['src/static/sass/**/*.scss']
+  css:['src/sass/**/*.scss']
 };
 
 gulp.task('mincss', function(){
@@ -32,7 +32,7 @@ gulp.task('mincss', function(){
       };
     }))
     .pipe(minifyCss())
-    .pipe(gulp.dest('src/static/css'))
+    .pipe(gulp.dest('src/css'))
     .pipe(reload({stream:true}))
     .pipe(notify('SASS compile success.'));
 });
@@ -81,15 +81,15 @@ gulp.task('browserSync', function() {
 gulp.task('scripts', function() {
     return gulp.src([
             // Библиотеки
-            'src/static/libs/magnific/jquery.magnific-popup.min.js',
-            'src/static/libs/bxslider/jquery.bxslider.min.js',
-            'src/static/libs/maskedinput/maskedinput.js',
-            'src/static/libs/slick/slick.min.js',
-            'src/static/libs/validate/jquery.validate.min.js'
+            'src/libs/magnific/jquery.magnific-popup.min.js',
+            'src/libs/bxslider/jquery.bxslider.min.js',
+            'src/libs/maskedinput/maskedinput.js',
+            'src/libs/slick/slick.min.js',
+            'src/libs/validate/jquery.validate.min.js'
         ])
         .pipe(concat('libs.min.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('src/static/js'))
+        .pipe(gulp.dest('src/js'))
         .pipe(reload({
             stream: true
         }));
@@ -97,12 +97,12 @@ gulp.task('scripts', function() {
 
 // Сборка спрайтов PNG
 gulp.task('cleansprite', function() {
-    return del.sync('src/static/img/sprite/sprite.png');
+    return del.sync('src/img/sprite/sprite.png');
 });
 
 gulp.task('spritemade', function() {
     var spriteData =
-        gulp.src('src/static/img/sprite/*.*')
+        gulp.src('src/img/sprite/*.*')
         .pipe(spritesmith({
             imgName: 'sprite.png',
             cssName: '_sprite.scss',
@@ -115,15 +115,15 @@ gulp.task('spritemade', function() {
             }
         }));
 
-    spriteData.img.pipe(gulp.dest('src/static/img/sprite/')); // путь, куда сохраняем картинку
-    spriteData.css.pipe(gulp.dest('src/static/stylus/')); // путь, куда сохраняем стили
+    spriteData.img.pipe(gulp.dest('src/img/sprite/')); // путь, куда сохраняем картинку
+    spriteData.css.pipe(gulp.dest('src/sass/')); // путь, куда сохраняем стили
 });
 gulp.task('sprite', ['cleansprite', 'spritemade']);
 
 // Слежение
 gulp.task('watcher', ['browserSync', 'mincss', 'pug', 'scripts'], function(){
   gulp.watch(paths.css, ['mincss']);
-  gulp.watch(['src/static/js/*.js', '!src/static/js/libs.min.js', '!src/static/js/jquery.js'], ['scripts']);
+  gulp.watch(['src/js/*.js', '!src/js/libs.min.js'], ['scripts']);
   gulp.watch('src/pug/**/*.pug', ['pug']);
   gulp.watch(paths.html, ['html']);
 });
@@ -135,36 +135,36 @@ gulp.task('clean', function() {
 
 // Оптимизация изображений
 gulp.task('img', function() {
-    return gulp.src(['src/static/img/**/*', '!src/static/img/sprite/*'])
+    return gulp.src(['src/img/**/*', '!src/img/sprite/*'])
         .pipe(cache(imagemin({
             progressive: true,
             use: [pngquant()]
 
         })))
-        .pipe(gulp.dest('product/static/img'));
+        .pipe(gulp.dest('product/img'));
 });
 
 // Сборка проекта
 
 gulp.task('build', ['clean', 'img', 'mincss', 'scripts'], function() {
-    var buildCss = gulp.src('src/static/css/*.css')
-        .pipe(gulp.dest('product/static/css'));
+    var buildCss = gulp.src('src/css/*.css')
+        .pipe(gulp.dest('product/css'));
 
-    var buildFonts = gulp.src('src/static/fonts/**/*')
-        .pipe(gulp.dest('product/static/fonts'));
+    var buildFonts = gulp.src('src/fonts/**/*')
+        .pipe(gulp.dest('product/fonts'));
 
-    var buildJs = gulp.src('src/static/js/**.js')
-        .pipe(gulp.dest('product/static/js'));
+    var buildJs = gulp.src('src/js/**.js')
+        .pipe(gulp.dest('product/js'));
 
     var buildHtml = gulp.src('src/*.html')
         .pipe(gulp.dest('product/'));
 
-    var buildImg = gulp.src('src/static/img/sprite/sprite.png')
+    var buildImg = gulp.src('src/img/sprite/sprite.png')
         .pipe(imagemin({
             progressive: true,
             use: [pngquant()]
         }))
-        .pipe(gulp.dest('product/static/img/sprite/'));
+        .pipe(gulp.dest('product/img/sprite/'));
 });
 
 gulp.task('default', ['watcher', 'browserSync']);

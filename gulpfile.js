@@ -22,6 +22,8 @@ var paths = {
   css:['src/sass/**/*.scss']
 };
 
+// SASS
+
 gulp.task('mincss', function(){
   return gulp.src(paths.css)
     .pipe(sass())
@@ -81,11 +83,9 @@ gulp.task('browserSync', function() {
 gulp.task('scripts', function() {
     return gulp.src([
             // Библиотеки
-            'src/libs/magnific/jquery.magnific-popup.min.js',
-            'src/libs/bxslider/jquery.bxslider.min.js',
-            'src/libs/maskedinput/maskedinput.js',
-            'src/libs/slick/slick.min.js',
-            'src/libs/validate/jquery.validate.min.js'
+            'src/libs/bower/jquery/dist/jquery.min.js',
+            'src/libs/bower/magnific-popup/dist/jquery.magnific-popup.min.js',
+            'src/libs/bower/scrollreveal/dist/scrollreveal.min.js'
         ])
         .pipe(concat('libs.min.js'))
         .pipe(uglify())

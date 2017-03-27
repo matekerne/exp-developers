@@ -1,7 +1,8 @@
-{   "name": "exp_developers",
-    "version": "1.0.0",
-    "author": "Vitaly Shatalov", 
-    "license": "MIT",
+{
+  "name": "exp_developers",
+  "version": "1.0.0",
+  "author": "Vitaly Shatalov",
+  "license": "MIT",
   "devDependencies": {
     "browser-sync": "^2.18.8",
     "del": "^2.2.2",

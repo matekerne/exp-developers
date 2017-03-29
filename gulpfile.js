@@ -19,7 +19,7 @@ var gulp        = require('gulp'),
 
 var paths = {
   html:['src/*.html'],
-  css:['src/sass/**/*.scss']
+  css:['src/sass/main.scss']
 };
 
 // SASS
@@ -73,7 +73,6 @@ gulp.task('browserSync', function() {
     server: {
       baseDir: "src"
     },
-    port: 8080,
     open: true,
     notify: true
   });
@@ -122,7 +121,7 @@ gulp.task('sprite', ['cleansprite', 'spritemade']);
 
 // Слежение
 gulp.task('watcher', ['browserSync', 'mincss', 'pug', 'scripts'], function(){
-  gulp.watch(paths.css, ['mincss']);
+  gulp.watch('src/sass/**/*.scss', ['mincss']);
   gulp.watch(['src/js/*.js', '!src/js/libs.min.js'], ['scripts']);
   gulp.watch('src/pug/**/*.pug', ['pug']);
   gulp.watch(paths.html, ['html']);
